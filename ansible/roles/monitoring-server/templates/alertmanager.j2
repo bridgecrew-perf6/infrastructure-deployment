@@ -1,0 +1,21 @@
+global:
+  resolve_timeout: 1m
+  slack_api_url: https://hooks.slack.com/services/{{ slack_token }}
+
+route:
+  receiver: slack-notifications
+  group_by: [alertname, job]
+
+receivers:
+  - name: slack-notifications
+    slack_configs:
+      - channel: '#monitoring'
+        send_resolved: true
+        username: Prometheus
+        icon_url: https://avatars3.githubusercontent.com/u/3380462
+        color: '{{ '{{' }} template "slack.color" . {{ '}}' }}'
+        title: '{{ '{{' }} template "slack.title" . {{ '}}' }}'
+        text: '{{ '{{' }} template "slack.text" . {{ '}}' }}'
+
+templates:
+  - ./notifications.tmpl

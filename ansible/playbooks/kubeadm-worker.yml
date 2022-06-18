@@ -1,0 +1,7 @@
+---
+- hosts: k8s-workers
+  become: true
+
+  roles:
+    - role: roles/k8s-worker
+      k8s_master_ip: "{{ groups['k8s-master'][0] }}"

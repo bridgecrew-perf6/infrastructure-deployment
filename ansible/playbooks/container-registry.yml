@@ -1,0 +1,9 @@
+---
+- hosts: k8s-master
+  become: true
+
+  vars_files:
+    - ../vault.yml
+
+  roles:
+    - role: roles/container-registry

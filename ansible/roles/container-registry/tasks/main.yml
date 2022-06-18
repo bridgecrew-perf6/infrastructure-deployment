@@ -1,0 +1,9 @@
+---
+
+- name: Create a Secret to authenticate with a container registry
+  become_user: "{{ ansible_user }}"
+  command: >
+    kubectl create secret docker-registry {{ secret_name }}
+    --docker-server={{ registry_server }}
+    --docker-username={{ docker_username }}
+    --docker-password={{ docker_password }}

@@ -1,0 +1,55 @@
+{{ define "slack.title" -}}
+  [{{ .Status | toUpper -}}
+  {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+  ] {{ .CommonLabels.alertname }}
+{{- end }}
+
+{{ define "slack.text" -}}
+
+    {{ template "__alert_severity" . }}
+    {{- if (index .Alerts 0).Annotations.summary }}
+    {{- "\n" -}}
+    *Summary:* {{ (index .Alerts 0).Annotations.summary }}
+    {{- end }}
+
+    {{ range .Alerts }}
+
+      {{- if .Annotations.description }}
+      {{- "\n" -}}
+      {{ .Annotations.description }}
+      {{- "\n" -}}
+      {{- end }}
+      {{ "\n" -}}
+      *Details:*
+      {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+      {{ end }}
+
+    {{- end }}
+
+{{- end }}
+
+{{ define "__alert_severity" -}}
+    {{- if eq .CommonLabels.severity "critical" -}}
+    *Severity:* :fire: `Critical`
+    {{- else if eq .CommonLabels.severity "warning" -}}
+    *Severity:* :warning: `Warning`
+    {{- else if eq .CommonLabels.severity "info" -}}
+    *Severity:* :information_source: `Info`
+    {{- else -}}
+    *Severity:* :question: {{ .CommonLabels.severity }}
+    {{- end }}
+{{- end }}
+
+{{ define "slack.color" -}}
+    {{ if eq .Status "firing" -}}
+        {{ if eq .CommonLabels.severity "warning" -}}
+            warning
+        {{- else if eq .CommonLabels.severity "critical" -}}
+            danger
+        {{- else -}}
+            #439FE0
+        {{- end -}}
+    {{ else -}}
+    good
+    {{- end }}
+{{- end }}

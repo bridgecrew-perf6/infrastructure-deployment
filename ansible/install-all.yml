@@ -1,0 +1,19 @@
+---
+
+# k8s cluster
+- import_playbook: playbooks/kubeadm-node.yml
+- import_playbook: playbooks/kubeadm-master.yml
+- import_playbook: playbooks/kubeadm-worker.yml
+
+# kubeconfig
+- import_playbook: playbooks/k8s-kubeconfig.yml
+
+# container registry
+- import_playbook: playbooks/container-registry.yml
+
+# NFS fileserver
+- import_playbook: playbooks/nfs-fileserver.yml
+
+# monitoring
+- import_playbook: playbooks/k8s-cluster-monitoring.yml
+- import_playbook: playbooks/monitoring-server.yml

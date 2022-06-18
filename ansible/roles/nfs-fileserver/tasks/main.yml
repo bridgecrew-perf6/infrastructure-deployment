@@ -1,0 +1,48 @@
+---
+
+- name: Installing Prerequisites
+  apt:
+    name:
+      - nfs-kernel-server
+      - samba
+    state: present
+
+- name: Create a ext4 filesystem on /dev/vdb
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/vdb
+    opts: -L data
+
+- name: Create a data/ directory
+  file:
+    path: /data
+    state: directory
+    mode: 777
+    owner: nobody
+    group: nogroup
+
+- name: Update fstab configuration
+  lineinfile:
+    path: /etc/fstab
+    line: LABEL=data /data ext4 defaults 0 0
+
+- name: Mount a file system in /data directory
+  command: mount /data
+  ignore_errors: yes
+
+- name: Create NFS config
+  blockinfile:
+    path: /etc/exports
+    create: yes
+    block: |
+      /data {{ nfs_network }}(rw,no_subtree_check,no_root_squash,fsid=100)
+      /data 127.0.0.1(rw,no_subtree_check,no_root_squash,fsid=100)
+  notify:
+    - Restart NFS
+
+- name: Create Samba config
+  template:
+    src: templates/smb.conf.j2
+    dest: /etc/samba/smb.conf
+  notify:
+    - Restart Samba

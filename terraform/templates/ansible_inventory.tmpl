@@ -1,0 +1,17 @@
+[k8s-master]
+${master} ansible_user=${ansible_user}
+
+[k8s-workers]
+%{ for worker in workers ~}
+${worker} ansible_user=${ansible_user}
+%{ endfor ~}
+
+[k8s-nodes:children]
+k8s-master
+k8s-workers
+
+[srv]
+${srv} ansible_user=${ansible_user}
+
+[nfs]
+${fileserver} ansible_user=${ansible_user}

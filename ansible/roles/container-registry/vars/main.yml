@@ -1,0 +1,6 @@
+---
+
+secret_name: regcred
+registry_server: cr.yandex
+docker_username: oauth
+docker_password: "{{ yc_token }}"

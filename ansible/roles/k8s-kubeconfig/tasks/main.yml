@@ -1,0 +1,23 @@
+---
+
+- name: Create service account
+  become_user: "{{ ansible_user }}"
+  command: kubectl create serviceaccount {{ service_account_name }} -n kube-system
+  ignore_errors: yes
+
+- name: Grant cluster-admin permissions to the service account
+  become_user: "{{ ansible_user }}"
+  command: kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:{{ service_account_name }}
+  ignore_errors: yes
+
+- name: Request a token for a service account
+  become_user: "{{ ansible_user }}"
+  command: kubectl create token {{ service_account_name }} --namespace kube-system --duration 730h
+  register: kubectl_sa_token
+
+- name: Generate kubeconfig
+  become: no
+  template:
+    src: templates/kubeconfig.j2
+    dest: ../config
+  delegate_to: localhost

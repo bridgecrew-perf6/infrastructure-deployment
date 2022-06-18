@@ -1,0 +1,4 @@
+---
+
+samba_hosts_allow: "192.168.10."
+nfs_network: 192.168.10.0/24

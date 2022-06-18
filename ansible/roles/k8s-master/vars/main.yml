@@ -1,0 +1,4 @@
+---
+
+pod_network_manifest_file: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+pod_network_cidr: 10.244.0.0/16

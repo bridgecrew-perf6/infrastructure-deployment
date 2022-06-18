@@ -1,0 +1,12 @@
+---
+- hosts: k8s-nodes
+  become: true
+
+  roles:
+    - role: roles/nfs-k8s-nodes
+
+- hosts: nfs
+  become: true
+
+  roles:
+    - role: roles/nfs-fileserver

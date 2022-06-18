@@ -1,0 +1,9 @@
+---
+- hosts: srv
+  become: true
+
+  vars_files:
+    - ../vault.yml
+
+  roles:
+    - role: roles/monitoring-server

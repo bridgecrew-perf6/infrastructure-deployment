@@ -1,0 +1,11 @@
+---
+
+- name: Restart NFS
+  service:
+    name: nfs-kernel-server
+    state: restarted
+
+- name: Restart Samba
+  service:
+    name: smbd
+    state: restarted

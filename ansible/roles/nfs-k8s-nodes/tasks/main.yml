@@ -1,0 +1,6 @@
+---
+
+- name: Installing Prerequisites
+  apt:
+    name: nfs-common
+    state: present

@@ -1,0 +1,27 @@
+---
+
+- name: Intilizing Kubernetes Cluster
+  command: kubeadm init --pod-network-cidr "{{ pod_network_cidr }}" --control-plane-endpoint "{{ ansible_host }}"
+  run_once: true
+  ignore_errors: yes
+
+- pause: seconds=30
+
+- name: Create .kube directory
+  file:
+    path: /home/{{ ansible_user }}/.kube
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Copy admin.conf to .kube folder
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/{{ ansible_user }}/.kube/config
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    remote_src: yes
+
+- name: Create Pod Network
+  become_user: "{{ ansible_user }}"
+  command: kubectl apply -f {{ pod_network_manifest_file }}
