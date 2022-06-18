@@ -1,4 +1,4 @@
-# Infrastructure-deployment 
+# Infrastructure-deployment
 
 The project creates infrastructure for application deployment:
 - Single Master Kubernetes Cluster
@@ -8,7 +8,7 @@ The project creates infrastructure for application deployment:
 
 Set sensitive values with a `secret.tfvars` file and sensitive backend values with `backend-secret.tfvars`.
 
-To deploy this project run
+To deploy this project, run
 
 ```bash
   make terrafrom-run

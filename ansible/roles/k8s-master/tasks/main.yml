@@ -14,7 +14,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
-- name: Copy admin.conf to .kube folder
+- name: Copy admin.conf to .kube directory
   copy:
     src: /etc/kubernetes/admin.conf
     dest: /home/{{ ansible_user }}/.kube/config
